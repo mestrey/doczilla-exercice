@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Вкусные блинчики</title>
+  </head>
+  <body
+    style="
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2rem;
+      align-items: center;
+      height: 100vh;
+      margin: 3rem;
+    "
+  >
+    <button id="nextBtn">Next</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.7/lib/p5.min.js"></script>
+    <script>
+      const capacity = parseInt(`{{capacity}}`);
+      const input = JSON.parse(`{{input}}`);
+      const moves = JSON.parse(`{{moves}}`);
+      let move = 0;
+
+      const nextBtn = document.getElementById("nextBtn");
+
+      const colorMap = {};
+      const possibleColor = ["#92adf7", "#8ced9b", "#f79ed5", "#000000", "#f6f79e", "#645f7a"];
+
+      const getColor = (id) => {
+        if (colorMap[id] === undefined) {
+          const randomIndex = Math.floor(Math.random() * possibleColor.length);
+          const removedElement = possibleColor.splice(randomIndex, 1)[0];
+          colorMap[id] = removedElement;
+
+          return removedElement;
+        }
+
+        return colorMap[id];
+      };
+
+      const rows = Math.floor((input.length - 1) / 7) + 1;
+      const canvasHeight = capacity * 40 * rows + (rows - 1) * 10 + 20;
+
+      function setup() {
+        createCanvas(790, canvasHeight);
+      }
+
+      function draw() {
+        background(200);
+
+        for (let i = 0; i < input.length; i++) {
+          for (let j = 0; j < capacity; j++) {
+            fill(input[i][j] !== undefined ? getColor(input[i][j]) : "white");
+            rect(10 + i * 100 + i * 10, canvasHeight - (j + 1) * 40 - 10, 100, 40);
+          }
+        }
+      }
+
+      nextBtn.addEventListener("click", () => {
+        if (move > moves.length - 1) {
+          return;
+        }
+
+        const nextMove = moves[move];
+        input[nextMove[1]].push(input[nextMove[0]].pop());
+
+        move++;
+      });
+    </script>
+  </body>
+</html>
