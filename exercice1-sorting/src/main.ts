@@ -38,12 +38,28 @@ const main = async () => {
     }
   } else {
     capacity = 4;
-    input = [["y", "r", "r", "r"], ["y", "r", "y", "y"], [], []];
+    input = [
+      "2a44",
+      "18d8",
+      "a759",
+      "5325",
+      "6b87",
+      "dd12",
+      "478b",
+      "ab31",
+      "a799",
+      "626b",
+      "4693",
+      "53d1",
+      "",
+      "",
+    ].map((e) => e.split(""));
   }
 
   const solver = new Solver(input, capacity);
   const solution = solver.solve();
-  console.log("\nSolution:", solution, "\n");
+  console.log("\nMoves:", solution.length);
+  console.log("Solution:", solution, "\n");
 
   const wantsVisualization = (await askQuestion<string>(`Visualize (YES/no)? `)) !== "no";
   if (wantsVisualization) {

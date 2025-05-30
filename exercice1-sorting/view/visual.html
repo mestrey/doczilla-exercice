@@ -28,7 +28,21 @@
       const nextBtn = document.getElementById("nextBtn");
 
       const colorMap = {};
-      const possibleColor = ["#92adf7", "#8ced9b", "#f79ed5", "#000000", "#f6f79e", "#645f7a"];
+      const possibleColor = [
+        "#8ECAE6",
+        "#219EBC",
+        "#023047",
+        "#000000",
+        "#FFB703",
+        "#FB8500",
+        "#884873",
+        "#8B6477",
+        "#021B47",
+        "#2165BC",
+        "#8EAEE6",
+        "#FFFFFF",
+        "#FF00FF",
+      ];
 
       const getColor = (id) => {
         if (colorMap[id] === undefined) {
@@ -45,6 +59,10 @@
       const rows = Math.floor((input.length - 1) / 7) + 1;
       const canvasHeight = capacity * 40 * rows + (rows - 1) * 10 + 20;
 
+      const w = 100;
+      const h = 40;
+      const p = 10;
+
       function setup() {
         createCanvas(790, canvasHeight);
       }
@@ -54,8 +72,13 @@
 
         for (let i = 0; i < input.length; i++) {
           for (let j = 0; j < capacity; j++) {
-            fill(input[i][j] !== undefined ? getColor(input[i][j]) : "white");
-            rect(10 + i * 100 + i * 10, canvasHeight - (j + 1) * 40 - 10, 100, 40);
+            fill(input[i][j] !== undefined ? getColor(input[i][j]) : 200);
+            rect(
+              p + (i % 7) * w + (i % 7) * p,
+              (capacity - 1) * h + p - j * h + capacity * h * Math.floor(i / 7) + p * Math.floor(i / 7),
+              w,
+              h
+            );
           }
         }
       }
