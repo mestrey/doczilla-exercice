@@ -10,7 +10,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -63,7 +63,8 @@ public class OpenMeteoService {
     }
 
     private int findCurrentHourIndex(List<String> timeList) {
-        ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC)
+        ZoneId moscowZoneId = ZoneId.of("Europe/Moscow");
+        ZonedDateTime now = ZonedDateTime.now(moscowZoneId)
                 .withMinute(0)
                 .withSecond(0)
                 .withNano(0);
@@ -72,7 +73,7 @@ public class OpenMeteoService {
         for (int i = 0; i < timeList.size(); i++) {
             try {
                 LocalDateTime localTime = LocalDateTime.parse(timeList.get(i), formatter);
-                ZonedDateTime timePoint = localTime.atZone(ZoneOffset.UTC);
+                ZonedDateTime timePoint = localTime.atZone(moscowZoneId);
 
                 if (!timePoint.isBefore(now)) {
                     return i;
