@@ -180,7 +180,7 @@ npm run cron
 
 Страница будет такая:
 
-![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-login.png "alt text")
 
 Тут поставить:
 
@@ -189,24 +189,24 @@ PASSWORD: `admin`
 
 Открывается дашборд:
 
-![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-dash1.png "alt text")
 
 Нажимаем на "Upload file" и переходим в эту страницу:
 
-![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-upload.png "alt text")
 
 Добавляем файл:
 
-![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-end.png "alt text")
 
 И автоматически переходим в дашборд где наш файл теперь отображается:
 
-![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-dash2.png "alt text")
 
 Ссылка доступна по кнопке:
 
-![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-link.png "alt text")
 
 Если нажать, автоматически копируется:
 
-![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-link2.png "alt text")
