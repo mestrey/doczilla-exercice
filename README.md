@@ -197,7 +197,7 @@ PASSWORD: `admin`
 
 Добавляем файл:
 
-![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-end.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-upload-end.png "alt text")
 
 И автоматически переходим в дашборд где наш файл теперь отображается:
 
