@@ -275,3 +275,7 @@ mvn clean compile exec:java
 Или через апи:
 
 ![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe3-api.png "alt text")
+
+Все сохраняется в redis:
+
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe3-redis.png "alt text")
