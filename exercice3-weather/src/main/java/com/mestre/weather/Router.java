@@ -6,12 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mestre.weather.Controllers.ApiController;
+import com.mestre.weather.Controllers.WebController;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 public class Router {
     private static Map<String, HttpHandler> routes = new HashMap<>() {
         {
+            put("/", new WebController());
             put("/weather", new ApiController());
         }
     };
