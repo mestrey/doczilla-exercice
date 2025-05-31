@@ -104,7 +104,7 @@ Solution: [
 ]
 ```
 
-И предлагается визуализацию:
+И предлагается визуализация:
 
 ```
 Visualize (YES/no)?
@@ -117,5 +117,96 @@ http://127.0.0.1:3000/
 ![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-start.png "alt text")
 
 ![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-during.png "alt text")
+
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+
+## Задание 2: Файлообменный сервис
+
+### Структура проекта
+
+```
+exercice2-files/
+├── src/
+│   ├── Controllers/
+│   │   ├── Controller.ts
+│   │   ├── DashboardController.ts
+│   │   ├── FileController.ts
+│   │   ├── LoginController.ts
+│   │   └── UploadController.ts
+│   ├── Services/
+│   │   └── DataServices.ts
+│   ├── Auth.ts
+│   ├── cron.ts
+│   ├── main.ts
+│   └── Server.ts
+...
+```
+
+### Запуск
+
+1. Перейдите в директорию задачи:
+
+```bash
+cd exercice2-files
+```
+
+2. Установите зависимости:
+
+```bash
+npm i
+```
+
+3. Build:
+
+```bash
+npm run build
+```
+
+4. Запустите решение:
+
+```bash
+npm run start
+```
+
+5. PS: "автоматическое удаление устаревших файлов (устаревшими файлами считать те, которые не скачивали в течение определенного срока, например, 30 дней)" через CRON, скрипт запускается таким образом:
+
+```bash
+npm run cron
+```
+
+### Как работает
+
+Запускается сервер: http://127.0.0.1:4000
+
+Страница будет такая:
+
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+
+Тут поставить:
+
+EMAIL: `admin@admin.com`\
+PASSWORD: `admin`
+
+Открывается дашборд:
+
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+
+Нажимаем на "Upload file" и переходим в эту страницу:
+
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+
+Добавляем файл:
+
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+
+И автоматически переходим в дашборд где наш файл теперь отображается:
+
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+
+Ссылка доступна по кнопке:
+
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
+
+Если нажать, автоматически копируется:
 
 ![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
