@@ -56,7 +56,7 @@ class MinHeap<Type> {
     }
   }
 
-  push(node: Type) {
+  push(node: Type): void {
     this.heap.push(node);
     this.heapifyUp(this.heap.length - 1);
   }
@@ -83,10 +83,6 @@ class MinHeap<Type> {
 
 class Solver {
   public constructor(private tubes: string[][], private capacity: number) {}
-
-  private isPure(tube: string[]): boolean {
-    return tube.length !== 0 ? tube.every((ball: string) => ball === tube[0]) : false;
-  }
 
   private computeHeuristic(tubes: string[][]): number {
     const colorTubes: Record<string, Set<number>> = {};
