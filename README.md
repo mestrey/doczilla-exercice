@@ -266,12 +266,12 @@ mvn clean compile exec:java
 
 Страница будет такая:
 
-![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-link2.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe3-home.png "alt text")
 
 Можно указать город:
 
-![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-link2.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe3-meteo.png "alt text")
 
 Или через апи:
 
-![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-link2.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe3-api.png "alt text")
