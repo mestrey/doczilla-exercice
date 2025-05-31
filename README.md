@@ -210,3 +210,68 @@ PASSWORD: `admin`
 Если нажать, автоматически копируется:
 
 ![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-link2.png "alt text")
+
+## Задание 3: Сервис прогноза погоды
+
+### Структура проекта
+
+```
+exercice3-weather/
+├── src/
+│   └── main/
+│       ├── java/com/mestre/weather/
+│       │   ├── Controller/
+│       │   │   ├── ApiController.java
+│       │   │   └── WebController.java
+│       │   ├── Helpers/
+│       │   │   └── CityWeatherHelper.java
+│       │   ├── Models/
+│       │   │   ├── HourlyData.java
+│       │   │   ├── HourlyForecast.java
+│       │   │   └── Location.java
+│       │   ├── Services/
+│       │   │   ├── GeocodingService.java
+│       │   │   └── OpenMeteoService.java
+│       │   ├── App.java
+│       │   ├── Router.java
+│       │   └── Server.java
+│       └── resources/index.html
+├── docker-compose.yml # Redis
+└── pom.xml
+```
+
+### Запуск
+
+1. Перейдите в директорию задачи:
+
+```bash
+cd exercice3-weather
+```
+
+2. Запускаем docker если Redis не установлен на компе:
+
+```bash
+docker compose up -d
+```
+
+3. Запускаем проект:
+
+```bash
+mvn clean compile exec:java
+```
+
+### Как работает
+
+Запускается сервер: http://127.0.0.1:8000
+
+Страница будет такая:
+
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-link2.png "alt text")
+
+Можно указать город:
+
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-link2.png "alt text")
+
+Или через апи:
+
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe2-link2.png "alt text")
