@@ -114,8 +114,8 @@ Visualize (YES/no)?
 
 http://127.0.0.1:3000/
 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-start.png "alt text")
 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-during.png "alt text")
 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "alt text")
+![alt text](https://github.com/mestrey/doczilla-exercice/raw/main/imgs/exe1-end.png "alt text")
