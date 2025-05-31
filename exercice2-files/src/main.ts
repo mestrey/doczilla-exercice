@@ -4,12 +4,15 @@ import fs from "fs";
 
 import Server from "./Server";
 import Auth from "./Auth";
+import DataService from "./Services/DataService";
 import LoginController from "./Controllers/LoginController";
 import UploadController from "./Controllers/UploadController";
 import DashboardController from "./Controllers/DashboardController";
+import FileController from "./Controllers/FileController";
 
 const server = new Server();
 const auth = new Auth("secret-123");
+const dataService = new DataService();
 
 server.addRoute("GET", "/", (req: IncomingMessage, res: ServerResponse) => {
   res.writeHead(200, { "Content-Type": "text/html" });
@@ -18,7 +21,7 @@ server.addRoute("GET", "/", (req: IncomingMessage, res: ServerResponse) => {
 
 server.addRoute("GET", "/dashboard", async (req: IncomingMessage, res: ServerResponse) => {
   if (!server.isAuth(auth, req, res)) return;
-  await new DashboardController().handle(req, res);
+  await new DashboardController(dataService).handle(req, res);
 });
 
 server.addRoute("GET", "/upload", (req: IncomingMessage, res: ServerResponse) => {
@@ -29,14 +32,16 @@ server.addRoute("GET", "/upload", (req: IncomingMessage, res: ServerResponse) =>
 
 server.addRoute("POST", "/upload", async (req: IncomingMessage, res: ServerResponse) => {
   if (!server.isAuth(auth, req, res)) return;
-  await new UploadController().handle(req, res);
+  await new UploadController(dataService).handle(req, res);
 });
 
 server.addRoute("POST", "/login", async (req: IncomingMessage, res: ServerResponse) => {
   await new LoginController(auth).handle(req, res);
 });
 
-server.addRoute("GET", "/f", (req: IncomingMessage, res: ServerResponse) => {});
+server.addRoute("GET", "/f", async (req: IncomingMessage, res: ServerResponse) => {
+  await new FileController(dataService).handle(req, res);
+});
 
 server.addRoute("GET", "/css", (req: IncomingMessage, res: ServerResponse) => {
   const queryParams = (req as any).queryParams;

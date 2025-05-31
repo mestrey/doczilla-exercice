@@ -1,12 +1,14 @@
 import { IncomingMessage, ServerResponse } from "http";
-
 import path from "path";
 import fs from "fs";
 import * as formidable from "formidable";
 
 import Controller from "./Controller";
+import DataService from "../Services/DataService";
 
 class UploadController implements Controller {
+  public constructor(private dataService: DataService) {}
+
   async handle(req: IncomingMessage, res: ServerResponse): Promise<void> {
     if (!req.headers["content-type"]?.startsWith("multipart/form-data")) {
       res.writeHead(400, { "Content-Type": "text/plain" });
@@ -33,7 +35,8 @@ class UploadController implements Controller {
         return;
       }
 
-      console.log("Uploaded files:", files);
+      console.log("Uploaded file:", files);
+      this.dataService.addFile(Date.now().toString(), files.files![0]);
 
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(

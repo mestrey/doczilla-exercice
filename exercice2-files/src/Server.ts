@@ -1,5 +1,6 @@
 import http, { IncomingMessage, ServerResponse } from "http";
 import url from "url";
+import path from "path";
 
 import Auth from "./Auth";
 
@@ -66,6 +67,28 @@ class Server {
 
   public start(port: number, callback?: () => void): void {
     this.server.listen(port, "127.0.0.1", callback);
+  }
+
+  public static getMimeType(filePath: string): string {
+    const ext = path.extname(filePath).toLowerCase();
+    const mimeTypes: { [key: string]: string } = {
+      ".html": "text/html",
+      ".css": "text/css",
+      ".js": "application/javascript",
+      ".json": "application/json",
+      ".jpg": "image/jpeg",
+      ".jpeg": "image/jpeg",
+      ".png": "image/png",
+      ".gif": "image/gif",
+      ".pdf": "application/pdf",
+      ".txt": "text/plain",
+      ".zip": "application/zip",
+      ".mp3": "audio/mpeg",
+      ".mp4": "video/mp4",
+      ".svg": "image/svg+xml",
+    };
+
+    return mimeTypes[ext] || "application/octet-stream";
   }
 }
 
