@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Upload Dialog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css?file=upload.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1><i class="fas fa-cloud-upload-alt"></i> Upload Files</h1>
+        <button class="close-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="content">
+        <div class="upload-area" id="dropZone">
+          <i class="fas fa-cloud-upload-alt upload-icon"></i>
+          <h2>Drag & Drop your files here</h2>
+          <p>Supports: PDF, DOC, JPG, PNG, ZIP (Max 100MB each)</p>
+          <button class="browse-btn">Browse Files</button>
+          <input type="file" class="file-input" id="fileInput" />
+        </div>
+
+        <div class="file-list">
+          <h3><i class="fas fa-file-alt"></i> Selected File</h3>
+          <div id="filesContainer"></div>
+        </div>
+
+        <div class="status-message" id="statusMessage"></div>
+
+        <div class="action-buttons">
+          <button class="action-btn cancel-btn" id="cancelBtn">Cancel</button>
+          <button class="action-btn upload-btn" id="uploadBtn"><i class="fas fa-upload"></i> Upload Files</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const browseBtn = document.querySelector(".browse-btn");
+      const filesContainer = document.getElementById("filesContainer");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const closeBtn = document.querySelector(".close-btn");
+      const statusMessage = document.getElementById("statusMessage");
+
+      const fileTypeIcons = {
+        pdf: "pdf",
+        doc: "doc",
+        docx: "doc",
+        jpg: "img",
+        jpeg: "img",
+        png: "img",
+        gif: "img",
+        zip: "zip",
+        rar: "zip",
+      };
+
+      let filesToUpload = [];
+
+      browseBtn.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener("change", (e) => {
+        handleFiles(e.target.files);
+      });
+
+      ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ["dragenter", "dragover"].forEach((eventName) => {
+        dropZone.addEventListener(eventName, highlight, false);
+      });
+
+      ["dragleave", "drop"].forEach((eventName) => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+      });
+
+      function highlight() {
+        dropZone.classList.add("dragover");
+      }
+
+      function unhighlight() {
+        dropZone.classList.remove("dragover");
+      }
+
+      dropZone.addEventListener("drop", (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+      });
+
+      function handleFiles(files) {
+        filesToUpload = [];
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          if (filesToUpload.some((f) => f.name === file.name && f.size === file.size)) {
+            continue;
+          }
+          filesToUpload.push(file);
+          addFileToUI(file);
+        }
+      }
+
+      function addFileToUI(file) {
+        const fileExt = file.name.split(".").pop().toLowerCase();
+        const fileType = fileTypeIcons[fileExt] || "other";
+
+        const fileItem = document.createElement("div");
+        fileItem.className = "file-item";
+        fileItem.innerHTML = `
+              <div class="file-info">
+                  <div class="file-icon ${fileType}">
+                      <i class="fas fa-file${
+                        fileType === "pdf"
+                          ? "-pdf"
+                          : fileType === "img"
+                          ? "-image"
+                          : fileType === "zip"
+                          ? "-archive"
+                          : fileType === "doc"
+                          ? "-word"
+                          : ""
+                      }"></i>
+                  </div>
+                  <div class="file-details">
+                      <div class="file-name">${file.name}</div>
+                      <div class="file-size">${formatFileSize(file.size)}</div>
+                      <div class="progress-container">
+                          <div class="progress-bar" id="progress-${file.name}"></div>
+                      </div>
+                  </div>
+              </div>
+              <div class="file-actions">
+                  <button class="remove-btn" data-filename="${file.name}">
+                      <i class="fas fa-times"></i>
+                  </button>
+              </div>
+          `;
+
+        filesContainer.innerHTML = "";
+        filesContainer.appendChild(fileItem);
+
+        const removeBtn = fileItem.querySelector(".remove-btn");
+        removeBtn.addEventListener("click", () => {
+          removeFile(file.name);
+          fileItem.remove();
+        });
+      }
+
+      function formatFileSize(bytes) {
+        if (bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1) + " " + sizes[i]);
+      }
+
+      function removeFile(fileName) {
+        filesToUpload = filesToUpload.filter((file) => file.name !== fileName);
+      }
+
+      uploadBtn.addEventListener("click", async () => {
+        if (filesToUpload.length === 0) {
+          showStatus("error", "Please select files to upload");
+          return;
+        }
+
+        uploadBtn.disabled = true;
+        cancelBtn.disabled = true;
+        uploadBtn.innerHTML = '<div class="loading"></div> Uploading...';
+
+        try {
+          const formData = new FormData();
+          filesToUpload.forEach((file) => {
+            formData.append("files", file);
+          });
+
+          const response = await fetch("/upload?token=" + localStorage.getItem("auth_token"), {
+            method: "POST",
+            body: formData,
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            showStatus("success", "Files uploaded successfully!");
+
+            filesToUpload.forEach((file) => {
+              const progressBar = document.getElementById(`progress-${file.name}`);
+              if (progressBar) {
+                progressBar.style.width = "100%";
+              }
+            });
+
+            setTimeout(() => {
+              window.location.href = "/dashboard?token=" + localStorage.getItem("auth_token");
+            }, 3000);
+          } else {
+            throw new Error("Server responded with an error");
+          }
+        } catch (error) {
+          console.error("Upload error:", error);
+          showStatus("error", "Upload failed. Please try again.");
+          uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload Files';
+          uploadBtn.disabled = false;
+          cancelBtn.disabled = false;
+        }
+      });
+
+      function showStatus(type, message) {
+        statusMessage.textContent = message;
+        statusMessage.className = `status-message ${type}`;
+        statusMessage.style.display = "block";
+      }
+
+      cancelBtn.addEventListener("click", () => {
+        filesToUpload = [];
+        filesContainer.innerHTML = "";
+      });
+
+      function simulateProgress() {
+        filesToUpload.forEach((file) => {
+          const progressBar = document.getElementById(`progress-${file.name}`);
+          if (progressBar) {
+            let width = 0;
+            const interval = setInterval(() => {
+              if (width >= 100) {
+                clearInterval(interval);
+              } else {
+                width++;
+                progressBar.style.width = `${width}%`;
+              }
+            }, 20);
+          }
+        });
+      }
+
+      uploadBtn.addEventListener("click", simulateProgress);
+    </script>
+  </body>
+</html>

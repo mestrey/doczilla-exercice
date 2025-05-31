@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FileTransferHub | Secure File Sharing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css?file=home.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="hero">
+        <div class="logo">
+          <i class="fas fa-file-export"></i>
+          <h1>FileTransferHub</h1>
+        </div>
+
+        <h2>Secure & Fast File Sharing</h2>
+        <p>
+          Transfer files securely with end-to-end encryption. Share documents, photos, videos and more with colleagues,
+          friends, and family.
+        </p>
+
+        <div class="features">
+          <div class="feature">
+            <i class="fas fa-shield-alt"></i>
+            <span>Military-grade encryption</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-bolt"></i>
+            <span>Lightning-fast transfers</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-infinity"></i>
+            <span>No file size limits</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-cloud"></i>
+            <span>Cloud storage integration</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-link"></i>
+            <span>Share with secure links</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-history"></i>
+            <span>Transfer history tracking</span>
+          </div>
+        </div>
+
+        <p>Join our community of over 1 million users who trust FileTransferHub for their file sharing needs.</p>
+      </div>
+
+      <div class="form-container">
+        <div class="tabs">
+          <div class="tab active" data-tab="login">Login</div>
+          <div class="tab" data-tab="register">Register</div>
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <div class="form active" id="login-form">
+          <h3>Login to Your Account</h3>
+          <form id="loginForm">
+            <div class="input-group">
+              <label for="login-email">Email Address</label>
+              <input type="email" id="login-email" name="email" placeholder="Enter your email" required />
+            </div>
+            <div class="input-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" name="password" placeholder="Enter your password" required />
+            </div>
+            <div class="input-group">
+              <button type="submit" class="btn" id="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="form" id="register-form">
+          <h3>Create an Account</h3>
+          <form id="registerForm">
+            <div class="input-group">
+              <label for="register-name">Full Name</label>
+              <input type="text" id="register-name" name="name" placeholder="Enter your full name" required />
+            </div>
+            <div class="input-group">
+              <label for="register-email">Email Address</label>
+              <input type="email" id="register-email" name="email" placeholder="Enter your email" required />
+            </div>
+            <div class="input-group">
+              <label for="register-password">Password</label>
+              <input type="password" id="register-password" name="password" placeholder="Create a password" required />
+            </div>
+            <div class="input-group">
+              <label for="register-confirm">Confirm Password</label>
+              <input
+                type="password"
+                id="register-confirm"
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <button type="submit" class="btn" id="register-btn">
+                <i class="fas fa-user-plus"></i> Create Account
+              </button>
+            </div>
+          </form>
+          <div class="form-footer">
+            <p>
+              By creating an account you agree to our <a href="#">Terms of Service</a> and
+              <a href="#">Privacy Policy</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+      const messageDiv = document.getElementById("message");
+      const loginBtn = document.getElementById("login-btn");
+      const registerBtn = document.getElementById("register-btn");
+
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll(".tab").forEach((t) => {
+            t.classList.remove("active");
+          });
+
+          tab.classList.add("active");
+
+          document.querySelectorAll(".form").forEach((form) => {
+            form.classList.remove("active");
+          });
+
+          const tabId = tab.getAttribute("data-tab");
+          document.getElementById(`${tabId}-form`).classList.add("active");
+
+          clearMessage();
+        });
+      });
+
+      function clearMessage() {
+        messageDiv.style.display = "none";
+        messageDiv.textContent = "";
+        messageDiv.className = "message";
+      }
+
+      function showMessage(type, text) {
+        messageDiv.textContent = text;
+        messageDiv.className = `message ${type}`;
+        messageDiv.style.display = "block";
+
+        if (type === "success") {
+          setTimeout(clearMessage, 5000);
+        }
+      }
+
+      function setLoading(button, isLoading) {
+        if (isLoading) {
+          button.innerHTML = `<div class="loading"></div> Processing...`;
+          button.disabled = true;
+        } else {
+          if (button.id === "login-btn") {
+            button.innerHTML = `<i class="fas fa-sign-in-alt"></i> Login`;
+          } else {
+            button.innerHTML = `<i class="fas fa-user-plus"></i> Create Account`;
+          }
+          button.disabled = false;
+        }
+      }
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+
+        setLoading(loginBtn, true);
+
+        try {
+          const response = await fetch("/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            localStorage.setItem("auth_token", data.token);
+            showMessage("success", "Login successful! Redirecting...");
+            setTimeout(() => {
+              window.location.href = "/dashboard?token=" + encodeURI(data.token);
+            }, 1000);
+          } else {
+            showMessage("error", data.message || "Login failed. Please try again.");
+          }
+        } catch (error) {
+          console.error("Login error:", error);
+          showMessage("error", "Network error. Please try again later.");
+        } finally {
+          setLoading(loginBtn, false);
+        }
+      });
+
+      registerForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+      });
+    </script>
+  </body>
+</html>
